@@ -47,14 +47,13 @@ void setup() {
 }
 
 void openDoor(){
+    //Display that the door is opening
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Door Status");
+      lcd.setCursor(0, 1);
+      lcd.print("Opening");
     while(digitalRead(lowerLimit) == HIGH){
-        //Display that the door is opening
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Door Status");
-        lcd.setCursor(0, 1);
-        lcd.print("Opening");
-        //Open the door
         digitalWrite(dirPin, LOW);
         digitalWrite(stepPin, HIGH);
         delayMicroseconds(1000);
@@ -68,19 +67,18 @@ void openDoor(){
       lcd.print("Door Status");
       lcd.setCursor(0, 1);
       lcd.print("Open");
-      lcd.setCursor(4, 1);
-      for(int i=5; i>0; i++){
+      lcd.setCursor(5, 1);
+      for(int i=5; i>=0; i--){
+        lcd.print(i);
         delay(1000);
-        lcd.print(5-i);
       }
+      //State that the door is closing
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Door Status");
+      lcd.setCursor(0, 1);
+      lcd.print("Closing");
       while(digitalRead(upperLimit) == HIGH){
-        //State that the door is closing
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Door Status");
-        lcd.setCursor(0, 1);
-        lcd.print("Closing");
-        
         //Close the door
         digitalWrite(dirPin, HIGH);
         digitalWrite(stepPin, HIGH);
