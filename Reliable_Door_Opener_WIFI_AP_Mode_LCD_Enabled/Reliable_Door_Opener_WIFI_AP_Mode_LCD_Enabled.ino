@@ -22,7 +22,7 @@ void setup() {
 
   // Print a message to the LCD stating that the system is setting up.
   lcd.begin(16, 2);
-  lcd.print("Setting up AP Mode");
+  lcd.print("Setting up AP");
 
   //Set the pins into their respective modes.
   pinMode(dirPin, OUTPUT);
@@ -33,11 +33,20 @@ void setup() {
   //Setting up the wireless access point.
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
-  delay(1000);
+  
+  //Set up the MDNS server and print the status to the lcd and wait 3 seconds.
+  if (MDNS.begin("D308")){
+    lcd.setCursor(0, 1);
+    lcd.print("MDNS Active");
+  } else{
+    lcd.clear();
+    lcd.print("MDNS Inactive!");
+  }
+  delay(3000);
 
   //Display the information about IP to the user.
   lcd.clear();
-  lcd.print("Use this IP:");
+  lcd.print("D308.Local or");
   lcd.setCursor(0, 1);
   lcd.print(WiFi.softAPIP());
 
