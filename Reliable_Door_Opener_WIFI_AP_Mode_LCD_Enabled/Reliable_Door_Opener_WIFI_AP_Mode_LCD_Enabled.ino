@@ -106,7 +106,7 @@ void openDoor(){
       lcd.print("Closed");
       delay(3000);
       lcd.clear();
-      lcd.print("Use this IP:");
+      lcd.print("D308.Local or");
       lcd.setCursor(0, 1);
       lcd.print(WiFi.softAPIP()); 
   }
