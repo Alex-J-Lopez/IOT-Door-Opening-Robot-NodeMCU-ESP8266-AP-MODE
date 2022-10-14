@@ -67,8 +67,8 @@ void openDoor(){
       lcd.print("Door Status");
       lcd.setCursor(0, 1);
       lcd.print("Open");
-      lcd.setCursor(5, 1);
-      for(int i=5; i>=0; i--){
+      for(int i=5; i>0; i--){
+        lcd.setCursor(5, 1);
         lcd.print(i);
         delay(1000);
       }
