@@ -35,7 +35,7 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   
   //Set up the MDNS server and print the status to the lcd and wait 3 seconds.
-  if (MDNS.begin("D308")){
+  if (MDNS.begin("d308")){
     lcd.setCursor(0, 1);
     lcd.print("MDNS Active");
   } else{
@@ -53,6 +53,8 @@ void setup() {
   // Start the server
   server.begin();
   Serial.println("Server started");
+
+  MDNS.addService("http", "tcp", 80);
 }
 
 void openDoor(){
@@ -110,6 +112,8 @@ void openDoor(){
   }
 
 void loop() {
+  MDNS.update();
+
   WiFiClient client = server.available();
   if (!client) {
     return;
