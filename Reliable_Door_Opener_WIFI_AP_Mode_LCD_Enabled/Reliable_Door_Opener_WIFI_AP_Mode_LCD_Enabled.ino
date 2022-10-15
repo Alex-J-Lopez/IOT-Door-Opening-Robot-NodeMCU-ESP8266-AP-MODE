@@ -1,5 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
+#include <ESPAsyncTCP.h>        //Adds TCP communication library for async server.
+#include <ESPAsyncWebServer.h>  //Adds library for server handling.
 #include <LiquidCrystal.h>
 
 
@@ -13,8 +15,8 @@ int upperLimit = 4;    //Pin for upper limit switch
 int lowerLimit = 0;    //Pin for lower limit switch
 LiquidCrystal lcd(1, 3, 2, 13, 12, 14); //Define the pins for the LCD display without I2C converter
 
-//Set the webserver port as port 80
-WiFiServer server(80);
+//Set the AsyncWebServer port as port 80
+AsyncWebServer server(80);
 
 void setup() {
   Serial.begin(9600);
@@ -33,7 +35,7 @@ void setup() {
   //Setting up the wireless access point.
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
-  
+
   //Set up the MDNS server and print the status to the lcd and wait 3 seconds.
   if (MDNS.begin("d308")){
     lcd.setCursor(0, 1);
@@ -49,6 +51,11 @@ void setup() {
   lcd.print("D308.Local or");
   lcd.setCursor(0, 1);
   lcd.print(WiFi.softAPIP());
+
+  //Set up Async Server responder
+  server.on("/rand", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "text/plain", String(random(1000)));
+  });
 
   // Start the server
   server.begin();
@@ -157,8 +164,6 @@ void loop() {
   
   client.println("</html>");
  
-  delay(10); //increased delay, as device was hanging after a few minutes at 1ms
-  Serial.println("Client disconnected");
-  Serial.println("");
+  delay(10);
  
 }//END
