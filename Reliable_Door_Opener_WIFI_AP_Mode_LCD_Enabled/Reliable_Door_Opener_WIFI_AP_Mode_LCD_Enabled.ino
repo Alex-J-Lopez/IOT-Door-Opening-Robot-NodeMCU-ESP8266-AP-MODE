@@ -58,13 +58,25 @@ void setup() {
 }
 
 void openDoor(){
+    //Boolean for emergency stop on motor stall
+    bool emergencyStop = false;
+
     //Display that the door is opening
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Door Status");
-      lcd.setCursor(0, 1);
-      lcd.print("Opening");
-    while(digitalRead(lowerLimit) == HIGH){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Door Status");
+    lcd.setCursor(0, 1);
+    lcd.print("Opening");
+    
+    //Open the door while checking to see if the time elapsed has passed 2 seconds.
+    while(digitalRead(lowerLimit) == HIGH && !emergencyStop){
+        if (mills()>2000){
+          lcd.clear();
+          lcd.print("Motor Stall!");
+          lcd.setCursor(0, 1);
+          lcd.print("Door Closing!");
+          emergencyStop = true;
+        }
         digitalWrite(dirPin, LOW);
         digitalWrite(stepPin, HIGH);
         delayMicroseconds(1000);
@@ -72,7 +84,10 @@ void openDoor(){
         delayMicroseconds(1000);
         yield();
       }
-      //Display that the door is open and count down from 5 until the door starts to close.
+    
+    //If the emergency stop has not occured.
+    //Display that the door is open and count down from 5 until the door starts to close.
+    if(!emergencyStop){
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("Door Status");
@@ -83,33 +98,37 @@ void openDoor(){
         lcd.print(i);
         delay(1000);
       }
-      //State that the door is closing
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Door Status");
-      lcd.setCursor(0, 1);
-      lcd.print("Closing");
-      while(digitalRead(upperLimit) == HIGH){
-        //Close the door
-        digitalWrite(dirPin, HIGH);
-        digitalWrite(stepPin, HIGH);
-        delayMicroseconds(1000);
-        digitalWrite(stepPin, LOW);
-        delayMicroseconds(1000);
-        yield();
-      }
-      //State that the door is closed for 3 seconds and then return to showing the IP address to use.
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Door Status");
-      lcd.setCursor(0, 1);
-      lcd.print("Closed");
-      delay(3000);
-      lcd.clear();
-      lcd.print("D308.Local or");
-      lcd.setCursor(0, 1);
-      lcd.print(WiFi.softAPIP()); 
-  }
+    }
+      
+    //State that the door is closing
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Door Status");
+    lcd.setCursor(0, 1);
+    lcd.print("Closing");
+    
+    //Close the door
+    while(digitalRead(upperLimit) == HIGH){
+      digitalWrite(dirPin, HIGH);
+      digitalWrite(stepPin, HIGH);
+      delayMicroseconds(1000);
+      digitalWrite(stepPin, LOW);
+      delayMicroseconds(1000);
+      yield();
+    }
+    
+    //State that the door is closed for 3 seconds and then return to showing the IP address to use.
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Door Status");
+    lcd.setCursor(0, 1);
+    lcd.print("Closed");
+    delay(3000);
+    lcd.clear();
+    lcd.print("D308.Local or");
+    lcd.setCursor(0, 1);
+    lcd.print(WiFi.softAPIP()); 
+}
 
 void loop() {
   MDNS.update();
