@@ -11,9 +11,9 @@ const int dirPin = 16; //Pin for direction of stepper motor
 const int stepPin = 5; //Pin for stepping the motor forward
 int upperLimit = 4;    //Pin for upper limit switch
 int lowerLimit = 0;    //Pin for lower limit switch
-LiquidCrystal lcd(1, 3, 2, 13, 12, 14); //Define the pins for the LCD display without I2C converter
+LiquidCrystal lcd(1, 3, 2, 13, 12, 14); //Pins for the LCD display without an I2C converter
 
-//Set the webserver port as port 80
+//Set the webserver port as port 80 to listen for tcp connections.
 WiFiServer server(80);
 
 void setup() {
@@ -35,7 +35,7 @@ void setup() {
   IPAddress IP = WiFi.softAPIP();
   
   //Set up the MDNS server and print the status to the lcd and wait 3 seconds.
-  if (MDNS.begin("d308")){
+  if (MDNS.begin("d308", WiFi.softAPIP())){
     lcd.setCursor(0, 1);
     lcd.print("MDNS Active");
   } else{
