@@ -70,7 +70,8 @@ void openDoor(){
     
     //Open the door while checking to see if the time elapsed has passed 2 seconds.
     while(digitalRead(lowerLimit) == HIGH && !emergencyStop){
-        if (mills()>2000){
+        startmills = mills();
+        if ((mills()-startmills)>2000){ //changed so that this code works properly.
           lcd.clear();
           lcd.print("Motor Stall!");
           lcd.setCursor(0, 1);
