@@ -1,1 +1,37 @@
 V1
+.
+.
+.
+
+
+V1 Issues
+- no way to attach bottom and top
+- top PCB slides don't need to be removable, they can be extruded upwards (+z) to connect with the roof (current PCB gap is 0.1in exactly) ✓
+- reduce padding to prevent sideways movement on PCBs (currently perfect for 7.11cm) ✓
+- split up TL screen slide to allow room for trapezoid on left side of screen (2.25cm) ✓
+- increase height of the latter section of the bottom PCB slides to make it so that the entire circuit is supported (include a break in the left side equal to the width used for the TL screen slide) ✓
+- increase height of the hole for the wires (.275cm). Decrease width to allow for 10 pads to be used (2.75cm in width plus padding, not including the first 0.30cm) ✓
+- bottom of the bottom PCB is not flat all the way across (first 0.3cm is clear, as well as the last 1.93cm) ✓
+
+V2 changes
+.
+.
+.
+
+V2 Issues
+- allow 12 pins used, not 10
+- increase height of the hole for the wires (.3cm). Decrease width to allow for 12 pads to be used (3.1cm in width plus padding, not including the first 0.38cm) ✓
+- bottom of the bottom PCB is not flat all the way across (first 0.3cm is clear, as well as the last 1.4cm) ✓
+
+V2.1 changes
+.
+.
+.
+
+V2.1 Issues
+- add ability for 6mm M3 nut and screw to hold together the box
+
+V2.2 changes
+.
+.
+.
